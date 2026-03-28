@@ -15,6 +15,29 @@ This library is a self-contained FX options pricing and risk engine. Given marke
 - **Greeks** — delta, gamma, vega, theta, rho — the risk sensitivities that tell a trader exactly how to hedge
 - **Implied volatility** via Newton-Raphson, accurate to machine epsilon
 
+**cpp**
+```
+MarketSnap mkt{.S = 1.085, .sigma = 0.075, .r_d = 0.0435, .r_f = 0.025};
+Contract call{.K = 1.09, .T = 0.25, .type = OptType::Call};
+That's EURUSD with:
+
+Spot = 1.085
+
+Vol = 7.5%
+
+Domestic rate (USD) = 4.35%
+
+Foreign rate (EUR) = 2.50%
+
+Strike = 1.09, expiry = 3 months, call
+```
+And in the Jupyter notebook (python/demo.ipynb), the same data is passed via Python:
+
+**python**
+```
+mkt = fp.MarketSnap(S=1.085, sigma=0.075, r_d=0.0435, r_f=0.025)
+call = fp.Contract(K=1.09, T=0.25, type=fp.OptType.Call)
+```
 Five pricing engines cover different use cases:
 
 | Engine | What it solves | Speed |
