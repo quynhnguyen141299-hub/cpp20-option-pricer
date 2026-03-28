@@ -644,7 +644,7 @@ Max DD duration:             47  periods
 Calmar ratio:           +7.0837
 
 ---
-
+```
 ## Demo Status
 
 ```text
