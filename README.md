@@ -2,6 +2,12 @@
 
 A production-quality library that prices FX options and simulates algorithmic order execution with transaction cost analysis. Built in modern C++ (C++23 / GCC 14+), header-only, zero warnings, 92 tests.
 
+QR Usage: Model experimentation
+Compare numerical methods: Monte Carlo vs PDE vs closed-form
+Study Convergence and Error + Test variance reduction techniques of MC estimators for option pricing
+
+In practice: 
+Deliver fast pricing for FX options and their real-time Greeks using variance reduction techniques (SOBOL QMC + Antithetic Variates + Control Variates + Combined (A+CV); when you cannot simulate a million MC paths every time, which costs memory and run-time.
 ---
 
 ## What it does
