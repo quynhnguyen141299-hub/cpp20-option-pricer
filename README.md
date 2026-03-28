@@ -52,10 +52,17 @@ Simulates how a large FX order (e.g. buy 10M EURUSD) gets sliced and executed ov
    110.00       1.10       2.3341       17.74%
    120.00       1.20       0.4705       16.11%
 
-Negative ρ → downside skew (OTM put IV > ATM > OTM call)
+ρ = −0.7 means spot and vol are negatively correlated — when the price drops, volatility spikes (the "fear" effect you see in real markets).
+- IV trending down as price rises → downside skew (OTM put IV > ATM > OTM call): realistic in FX and equity markets. BS give flat 19.77% across strikes, wrong and Heston model capture it. The Heston model lets volatility itself be random (stochastic vol), unlike Black-Scholes where volatility is fixed.
+
+Strike	meaning:
+lower: 80 (deep ITM call)	Moneyness 0.80 means this strike is 20% below spot. IV being 24.03% means high premium vol charge. 
+mid: 100 (ATM)	At-the-money. Implied vol is 19.77% —  baseline. Black-Scholes would give a flat 19.77% across all strikes, which is wrong --- Heston model captures this.
+above: 120 (deep OTM call)	20% above spot. Implied vol drops to 16.11%. Upside options are "cheaper" in vol terms.
 ```
 
 ### Barrier options — Down-and-Out Call
+A down-and-out call is a regular call that dies (knocks out) if spot ever touches the barrier from above during the option's life.
 
 ```
  Barrier   DO Price         SE    % Vanilla
@@ -65,8 +72,15 @@ Negative ρ → downside skew (OTM put IV > ATM > OTM call)
     90.0     8.6510     0.0326        82.8%
     95.0     5.6430     0.0292        54.0%
 ```
+Barrier	Interpretation
+60.0 → 100.2% of vanilla	Barrier is so far below spot that it's almost never hit. The DO call is worth essentially the same as a plain vanilla call. The 100.2% (slightly above 100%) is MC sampling noise.
+80.0 → 98.8%	Still far away, tiny chance of knockout. You lose only 1.2% of the vanilla value.
+90.0 → 82.8%	Barrier is getting close to spot. Meaningful probability of knockout, so the option is worth 17% less.
+95.0 → 54.0%	Barrier is very close — spot only needs to drop 5% to kill the option. Worth roughly half of vanilla. This is the discount you get for accepting knockout risk.
+SE is the Monte Carlo standard error — all around 0.03, meaning the prices are accurate to about ±0.06 (2 SE).
 
 ### FD PDE solver — European & American put
+This compares three methods for pricing the same put option:
 
 ```
             Method      Price      Delta      Gamma
@@ -78,6 +92,16 @@ Negative ρ → downside skew (OTM put IV > ATM > OTM call)
   FD vs BS error:         0.000831 (0.015%)
   Early exercise premium: 0.514657
 ```
+Method	What it is
+- BS European (5.5735)	Exact analytical Black-Scholes price. The "truth" for European puts.
+- FD European CN (5.5727)	The finite-difference PDE grid solver using Crank-Nicolson. It gets within 0.015% of the exact answer — this validates that the PDE solver is working correctly.
+- FD American CN (6.0874)	Same PDE solver but with early exercise allowed at every time step.
+
+The key numbers:
+Early exercise premium = 0.5147 — the American put is worth 0.51 more than the European put. That's the value of being able to exercise early (useful when the option is deep ITM and you'd rather have cash earning interest).
+
+--- Delta: −0.41 vs −0.36 — the American put has a steeper delta because it's more likely to be exercised early, making it behave more like the underlying.
+--- Gamma: 0.0229 vs 0.0187 — higher gamma on the American put means its delta is more sensitive near the early-exercise boundary.
 
 ### Algo comparison (10M EURUSD buy, 1 hour)
 
@@ -90,9 +114,9 @@ IS-Almgren             19    1.08504      +0.38      +1.01      +1.01
 ```
 Note: impact = η × σ × √(quantity / daily_volume)
 So for each algorithm:
-TWAP +0.55 bps — your equal-sized slices moved the price 0.55 bps against you over the hour.
-VWAP +0.46 bps — volume-weighted slicing caused less impact as it trades heavier when liquidity is deeper (open/close).
-IS-Almgren +1.01 bps — front-loading the order (to reduce timing risk) causes more impact because you're hitting book harder early on
+- TWAP +0.55 bps — your equal-sized slices moved the price 0.55 bps against you over the hour.
+- VWAP +0.46 bps — volume-weighted slicing caused less impact as it trades heavier when liquidity is deeper (open/close).
+- IS-Almgren +1.01 bps — front-loading the order (to reduce timing risk) causes more impact because you're hitting book harder early on
 
 The trade-off IS-Almgren: accepting higher (market impact) now to avoid risk of the (price drifting) further away if you wait. 
 The urgency parameter (λ) controls that balance.
