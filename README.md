@@ -239,25 +239,104 @@ CMakeLists.txt
 
 ---
 
-## Build
+## Getting started
+
+### Prerequisites
+
+You need **GCC 14+** (for C++23 support). No other dependencies — the library is header-only.
+
+### Windows (via WSL)
+
+**1. Install WSL and Ubuntu**
+
+Open PowerShell as Administrator:
+
+```powershell
+wsl --install
+```
+
+Restart your PC. On reboot, Ubuntu will open — create a username and password.
+
+**2. Install GCC 14**
 
 ```bash
-# GCC 14+ (direct)
-g++ -std=c++23 -fcoroutines -O2 -Wall -Wextra -Wpedantic \
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y gcc-14 g++-14 git
+```
+
+**3. Clone and build**
+
+```bash
+git clone https://github.com/quynhnguyen141299-hub/cpp20-option-pricer.git
+cd cpp20-option-pricer
+
+g++-14 -std=c++23 -fcoroutines -O2 -Wall -Wextra -Wpedantic \
     -I include -pthread src/main.cpp -o fx_pricer
 
-# Run tests
-g++ -std=c++23 -fcoroutines -O2 -Wall -Wextra -Wpedantic \
+./fx_pricer
+```
+
+### Linux (native)
+
+Same as steps 2–3 above. Skip the WSL part.
+
+### Mac
+
+```bash
+brew install gcc@14
+git clone https://github.com/quynhnguyen141299-hub/cpp20-option-pricer.git
+cd cpp20-option-pricer
+
+g++-14 -std=c++23 -fcoroutines -O2 -Wall -Wextra -Wpedantic \
+    -I include -pthread src/main.cpp -o fx_pricer
+
+./fx_pricer
+```
+
+### Run tests
+
+```bash
+g++-14 -std=c++23 -fcoroutines -O2 -Wall -Wextra -Wpedantic \
     -I include -pthread tests/test_pricer.cpp -o test_pricer
 ./test_pricer
+# Expected: 92/92 tests passed
+```
 
-# CMake
+### CMake (alternative)
+
+```bash
 cmake -B build && cmake --build build
 ctest --test-dir build
 
 # Python bindings (optional, requires pybind11)
 cmake -DBUILD_PYTHON=ON -B build && cmake --build build
 ```
+
+### What you'll see
+
+The pricer runs 19 demos in order:
+
+| Section | What it shows |
+|---------|---------------|
+| FX Option Pricing | GK analytical price + all Greeks |
+| Variance Reduction | Sobol, antithetic, control variate vs plain MC |
+| Convergence | MC converging to BS as paths increase |
+| Greeks | Pathwise delta, likelihood-ratio gamma |
+| Threading | jthread pool speedup |
+| Early Stop | Coroutine stopping at 90K paths vs 5M budget (816x faster) |
+| Error Handling | `std::expected` error propagation |
+| Implied Vol | Newton-Raphson IV solver round-trip |
+| Arena | Arena allocator zero-malloc demo |
+| Heston | Volatility smile across strikes |
+| Heston MC | QE discretisation vs semi-closed-form |
+| Barrier | Down-and-out call at different barrier levels |
+| FD PDE | European vs American put, BS cross-validation |
+| Algo Comparison | TWAP vs VWAP vs IS on 10M EURUSD |
+| Urgency Sweep | IS with different λ values |
+| TCA Report | Full post-trade cost breakdown |
+| Alpha Signals | Spread + momentum signal scores over ticks |
+| Performance | Sharpe, Sortino, Calmar, max drawdown |
+| Machine Epsilon | IEEE 754 double precision boundary demo |
 
 ---
 
