@@ -91,14 +91,16 @@ This compares three methods for pricing the same put option:
 
   FD vs BS error:         0.000831 (0.015%)
   Early exercise premium: 0.514657
-```
-Method	What it is
-- BS European (5.5735)	Exact analytical Black-Scholes price. The "truth" for European puts.
-- FD European CN (5.5727)	The finite-difference PDE grid solver using Crank-Nicolson. It gets within 0.015% of the exact answer — this validates that the PDE solver is working correctly.
-- FD American CN (6.0874)	Same PDE solver but with early exercise allowed at every time step.
 
-The key numbers:
-Early exercise premium = 0.5147 — the American put is worth 0.51 more than the European put. That's the value of being able to exercise early (useful when the option is deep ITM and you'd rather have cash earning interest).
+Method and What it is
+- BS European (5.5735) :	Exact analytical Black-Scholes price. The "truth" for European puts.
+- FD European CN (5.5727) :	The finite-difference PDE grid solver using Crank-Nicolson. It gets within 0.015% of the exact answer — this validates that the PDE solver is working correctly.
+- FD American CN (6.0874) :	Same PDE solver but with early exercise allowed at every time step.
+
+Key numbers:
+- Early exercise premium = 0.5147 — the American put is worth 0.51 more than the European put.
+- That's the value of being able to exercise early (useful when the option is deep ITM and you'd rather have cash earning interest).
+```
 
 --- Delta: −0.41 vs −0.36 — the American put has a steeper delta because it's more likely to be exercised early, making it behave more like the underlying.
 --- Gamma: 0.0229 vs 0.0187 — higher gamma on the American put means its delta is more sensitive near the early-exercise boundary.
