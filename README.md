@@ -26,7 +26,7 @@ Simulates how a large FX order (e.g. buy 10M EURUSD) gets sliced and executed ov
 - **Order book simulator** — generates realistic tick data with configurable spread, depth, and a square-root market impact model.
 - **Transaction cost analysis (TCA)** — post-trade report: arrival shortfall, VWAP slippage, spread cost, impact cost, timing risk, participation rate.
 - **Alpha signals** — spread and momentum signals that score market conditions in [-1, +1], used to adjust execution aggressiveness in real time.
-- **Performance analytics** —= computes Annualized Return, Volatility, Sharpe, Sortino, Calmar, Max DD (value and duration) from any PnL or doubles returns series (the C++ perf. analytics Component take either a PnL series or a std::vector<double> of returns and compute a standard set of risk/return metrics).
+- **Performance analytics** — computes Annualized Return, Volatility, Sharpe, Sortino, Calmar, Max DD (value and duration) from any PnL or doubles returns series (the C++ perf. analytics Component take either a PnL series or a std::vector<double> of returns and compute a standard set of risk/return metrics).
 
 ---
 
