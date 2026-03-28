@@ -71,14 +71,14 @@ A down-and-out call is a regular call that dies (knocks out) if spot ever touche
     80.0    10.3303     0.0329        98.8%
     90.0     8.6510     0.0326        82.8%
     95.0     5.6430     0.0292        54.0%
-```
+
 Barrier	Interpretation
 60.0 → 100.2% of vanilla	Barrier is so far below spot that it's almost never hit. The DO call is worth essentially the same as a plain vanilla call. The 100.2% (slightly above 100%) is MC sampling noise.
 80.0 → 98.8%	Still far away, tiny chance of knockout. You lose only 1.2% of the vanilla value.
 90.0 → 82.8%	Barrier is getting close to spot. Meaningful probability of knockout, so the option is worth 17% less.
 95.0 → 54.0%	Barrier is very close — spot only needs to drop 5% to kill the option. Worth roughly half of vanilla. This is the discount you get for accepting knockout risk.
 SE is the Monte Carlo standard error — all around 0.03, meaning the prices are accurate to about ±0.06 (2 SE).
-
+```
 ### FD PDE solver — European & American put
 This compares three methods for pricing the same put option:
 
