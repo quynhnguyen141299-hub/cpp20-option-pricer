@@ -373,7 +373,7 @@ The pricer runs 19 demos in order:
 | Alpha Signals | Spread + momentum signal scores over ticks |
 | Performance | Sharpe, Sortino, Calmar, max drawdown |
 | Machine Epsilon | IEEE 754 double precision boundary demo |
-Here’s a README‑friendly markdown version that will render cleanly on GitHub while keeping the terminal flavour.
+
 
 # FULL output of the pricer + engine:
 
