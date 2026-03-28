@@ -339,8 +339,9 @@ The pricer runs 19 demos in order:
 | Machine Epsilon | IEEE 754 double precision boundary demo |
 Here’s a README‑friendly markdown version that will render cleanly on GitHub while keeping the terminal flavour.
 
-text
-# C++20 FX Option Pricer & Execution Engine
+# Sample output of the pricer + engine:
+
+C++20 FX Option Pricer & Execution Engine
 
 ```text
 ╔════════════════════════════════════════════════════════════════╗
