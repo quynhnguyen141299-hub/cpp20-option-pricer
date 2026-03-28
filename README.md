@@ -138,7 +138,7 @@ IV solver round-trip error:      4.16e-17
 | **Heston semi-closed-form** | Industry-standard stochastic vol model with characteristic function pricing. |
 | **QE discretisation** | Andersen (2008) variance scheme — correct non-negativity, second-order accuracy. |
 | **Brownian bridge** | Barrier continuity correction — captures between-step crossings, not just discrete monitoring. |
-| **Thomas algorithm** | O(N) tridiagonal solve — the 1D Kronecker specialisation of the FD PDE operator. |
+| **Thomas algorithm** | O(N) tridiagonal solve — the 1D specialisation of the FD PDE operator. |
 
 ---
 
