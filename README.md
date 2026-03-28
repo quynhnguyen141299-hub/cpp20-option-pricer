@@ -5,21 +5,37 @@ A reusable C++ library that helps FX traders prices FX options and FX QRs simula
 
 Built in C++23 (GCC 14+), header-only, zero warnings, 92 tests.
 
-QR Usage: Model experimentation
-- Compare numerical methods: Monte Carlo vs PDE vs closed-form
-- Study Convergence and Error + Test variance reduction techniques of MC estimators for option pricing
+---
 
-Also, this app deliver fast pricing for FX options and their real-time Greeks using variance reduction techniques (SOBOL QMC + Antithetic Variates + Control Variates + Combined (A+CV)); when you cannot simulate a million MC paths every time, which costs memory and run-time.
+## At a glance
+
+This library is a self-contained FX options pricing and risk engine. Given market data (spot rate, volatility, domestic/foreign interest rates) and a contract (strike, expiry, call/put), it computes:
+
+- **Fair value** of vanilla European, American, and barrier FX options
+- **Greeks** — delta, gamma, vega, theta, rho — the risk sensitivities that tell a trader exactly how to hedge
+- **Implied volatility** via Newton-Raphson, accurate to machine epsilon
+
+Five pricing engines cover different use cases:
+
+| Engine | What it solves | Speed |
+|--------|---------------|-------|
+| **Garman-Kohlhagen** | Vanilla Europeans (closed-form) | Microseconds |
+| **Monte Carlo** | Vanilla + variance reduction + Greeks | Milliseconds (500K paths) |
+| **Heston MC** | Stochastic vol — realistic vol smiles | Milliseconds |
+| **Barrier MC** | Knock-in / knock-out exotics | Milliseconds |
+| **Finite-Difference PDE** | American early exercise | Milliseconds |
+
+Everything is callable from Python via pybind11 — C++ handles the computation, Python handles visualization and analysis. The Jupyter notebook runs all engines interactively with charts.
+
+**QR usage:** Compare numerical methods (MC vs PDE vs closed-form), study convergence and variance reduction, and validate implementations by cross-checking engines against each other.
 
 ---
 
-## What it does
+## Detailed features
 
 ### Pricing
 
-Prices European, American, and barrier FX options with multiple engines and cross-validates them: i.e. checks that the different engines agree with each other or not (for QR options modelling experimentation / quick execution pricing with real-time greeks). 
-
-For example, the MC price should converge to the GK analytical price, and the FD PDE price should match BS to within 0.015%. If they all agree, you have confidence the implementations are correct.
+Prices European, American, and barrier FX options with multiple engines and cross-validates them — checks that different engines agree (e.g., MC converges to the GK analytical price, FD PDE matches BS to within 0.015%). If they all agree, you have confidence the implementations are correct.
 
 - **Garman-Kohlhagen (analytical)** — exact price and all Greeks in microseconds, plus a Newton-Raphson implied vol solver.
 - **Monte Carlo** — Sobol QMC, S_T control variate (~3x variance reduction), antithetic variates, pathwise delta, likelihood-ratio gamma, coroutine early-stop (816x speedup), jthread pool parallelism, and arena allocation.
@@ -230,7 +246,8 @@ include/pricer/
 
 python/
 ├── bindings.cpp           pybind11 bindings for all key types and engines
-└── demo.py                Python demo script
+├── demo.py                Python demo script (terminal)
+└── demo.ipynb             Jupyter notebook with 7 visual demos (Colab-ready)
 
 src/main.cpp               19 demos (9 pricing + 4 new features + 5 execution + 1 numerical)
 tests/test_pricer.cpp      92 unit tests
