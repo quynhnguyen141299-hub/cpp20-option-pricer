@@ -594,32 +594,6 @@ void demo_performance() {
     std::cout << "  --- Synthetic strategy (252 days, μ=8bp/day) ---\n";
     std::cout << "  " << format_report(rpt) << "\n\n";
 
-    // 2. Performance on VWAP backtest results — build PnL from fills
-    ExecutionOrder order{
-        .total_qty = 10e6, .side = Side::Ask,
-        .start_time_us = 0, .end_time_us = 3600e6, .label = "EURUSD"
-    };
-    ImpactModel impact{.eta = 0.2, .daily_vol = 0.007, .daily_volume = 50e9};
-    BacktestConfig bt_cfg{.n_ticks = 5'000, .tick_interval_us = 720'000};
-
-    VWAPAlgo algo(order, 20);
-    OrderBookSim book({}, 42);
-    auto result = run_backtest(algo, order, book, impact, bt_cfg);
-
-    // Convert tick mid-prices into a cumulative equity-like series
-    std::vector<double> equity;
-    equity.reserve(result.ticks.size());
-    double base_mid = result.ticks.front().mid;
-    for (const auto& t : result.ticks) {
-        equity.push_back(t.mid / base_mid);
-    }
-    auto tick_returns = cumulative_to_returns(equity);
-
-    // Treat ticks as ~1-second bars → annualize with trading seconds/year
-    PerformanceConfig tick_cfg{.annualization_factor = 252.0 * 6.5 * 3600.0};
-    auto bt_rpt = compute_performance(tick_returns, tick_cfg);
-    std::cout << "  --- VWAP backtest tick-level metrics ---\n";
-    std::cout << "  " << format_report(bt_rpt) << "\n";
 }
 
 // ──────────────────────────────────────────────────────────────────
