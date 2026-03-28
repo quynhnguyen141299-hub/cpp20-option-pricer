@@ -22,13 +22,9 @@ Contract call{.K = 1.09, .T = 0.25, .type = OptType::Call};
 That's EURUSD with:
 
 Spot = 1.085
-
 Vol = 7.5%
-
 Domestic rate (USD) = 4.35%
-
 Foreign rate (EUR) = 2.50%
-
 Strike = 1.09, expiry = 3 months, call
 ```
 And in the Jupyter notebook (python/demo.ipynb), the same data is passed via Python:
