@@ -82,12 +82,20 @@ Negative ρ → downside skew (OTM put IV > ATM > OTM call)
 ### Algo comparison (10M EURUSD buy, 1 hour)
 
 ```
-Algorithm           Fills  Avg Price  Arriv bps   VWAP bps     Impact
------------------------------------------------------------------------
+Algorithm           Fills  Avg Price  Arriv bps   VWAP bps     Impact bps
+--------------------------------------------------------------------------
 TWAP                   19    1.08499      -0.10      +0.55      +0.55
 VWAP                   20    1.08499      -0.10      +0.46      +0.46
 IS-Almgren             19    1.08504      +0.38      +1.01      +1.01
 ```
+Note: impact = η × σ × √(quantity / daily_volume)
+So for each algorithm:
+TWAP +0.55 bps — your equal-sized slices moved the price 0.55 bps against you over the hour.
+VWAP +0.46 bps — volume-weighted slicing caused less impact as it trades heavier when liquidity is deeper (open/close).
+IS-Almgren +1.01 bps — front-loading the order (to reduce timing risk) causes more impact because you're hitting book harder early on
+
+The trade-off IS-Almgren: accepting higher (market impact) now to avoid risk of the (price drifting) further away if you wait. 
+The urgency parameter (λ) controls that balance.
 
 ### Performance analytics (synthetic daily returns, 252 days)
 
