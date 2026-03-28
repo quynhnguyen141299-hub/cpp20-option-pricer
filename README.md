@@ -61,7 +61,7 @@ Negative ρ → downside skew (OTM put IV > ATM > OTM call)
 
 ```
             Method      Price      Delta      Gamma
-  --------------------------------------------
+  --------------------------------------------------
        BS European     5.5735    -0.3632   0.018762
   FD European (CN)     5.5727    -0.3618   0.018725
   FD American (CN)     6.0874    -0.4092   0.022923
@@ -74,7 +74,7 @@ Negative ρ → downside skew (OTM put IV > ATM > OTM call)
 
 ```
 Algorithm           Fills  Avg Price  Arriv bps   VWAP bps     Impact
-------------------------------------------------------------------
+-----------------------------------------------------------------------
 TWAP                   19    1.08499      -0.10      +0.55      +0.55
 VWAP                   20    1.08499      -0.10      +0.46      +0.46
 IS-Almgren             19    1.08504      +0.38      +1.01      +1.01
