@@ -1,7 +1,9 @@
 # C++23 FX Option Pricer & Execution Engine 
 
 
-A production-quality library that prices FX options and simulates algorithmic order execution with transaction cost analysis. Built in C++ (C++23 / GCC 14+).
+A production-quality library that prices FX options and simulates algorithmic execution of large FX orders using TWAP, VWAP, and Almgren-Chriss strategies, with order book simulation, square-root market impact, transaction cost analysis, and real-time alpha signals (spread and momentum).
+
+Built in C++ (C++23 / GCC 14+).
 
 QR Usage: Model experimentation
 Compare numerical methods: Monte Carlo vs PDE vs closed-form
@@ -9,6 +11,21 @@ Study Convergence and Error + Test variance reduction techniques of MC estimator
 
 Also, this app deliver fast pricing for FX options and their real-time Greeks using variance reduction techniques (SOBOL QMC + Antithetic Variates + Control Variates + Combined (A+CV)); when you cannot simulate a million MC paths every time, which costs memory and run-time.
 
+NOTE:
+SpreadSignal
+Keeps a std::deque of the last 100 spread observations (configurable via lookback)
+On each tick: score = (avg - current_spread) / avg, clamped to [-1, +1]
+So it's a simple arithmetic mean of the last 100 ticks — not EWMA, not time-bucketed
+
+MomentumSignal
+Keeps a std::deque of the last 50 mid-prices
+Computes return = (latest_mid - oldest_mid) / oldest_mid
+Normalizes by dividing by 0.01 (assumes daily returns rarely exceed 1%), clamped to [-1, +1]
+
+CompositeSignal
+Weighted average of any mix of signals via std::function type erasure
+
+Normalizes by total absolute weight, clamped to [-1, +1]
 ---
 
 ## What it does
@@ -176,6 +193,7 @@ IV solver round-trip error:      4.16e-17
 | **QE discretisation** | Andersen (2008) variance scheme — correct non-negativity, second-order accuracy. |
 | **Brownian bridge** | Barrier continuity correction — captures between-step crossings, not just discrete monitoring. |
 | **Thomas algorithm** | O(N) tridiagonal solve — the 1D specialisation of the FD PDE operator. |
+
 
 ---
 
