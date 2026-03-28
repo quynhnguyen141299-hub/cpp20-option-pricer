@@ -4,13 +4,13 @@
 A production-quality library that prices FX options and simulates algorithmic execution of large FX orders using TWAP, VWAP, and Almgren-Chriss strategies, with order book simulation, square-root market impact, transaction cost analysis, and real-time alpha signals (spread and momentum).
 
 Built in C++ (C++23 / GCC 14+).
-
+```
 QR Usage: Model experimentation
-Compare numerical methods: Monte Carlo vs PDE vs closed-form
-Study Convergence and Error + Test variance reduction techniques of MC estimators for option pricing
-
+- Compare numerical methods: Monte Carlo vs PDE vs closed-form
+- Study Convergence and Error + Test variance reduction techniques of MC estimators for option pricing
+```
 Also, this app deliver fast pricing for FX options and their real-time Greeks using variance reduction techniques (SOBOL QMC + Antithetic Variates + Control Variates + Combined (A+CV)); when you cannot simulate a million MC paths every time, which costs memory and run-time.
-
+```
 NOTE:
 SpreadSignal
 Keeps a std::deque of the last 100 spread observations (configurable via lookback)
