@@ -1,7 +1,7 @@
 # C++23 FX Option Pricer & Execution Engine 
 
 
-A production-quality library that prices FX options and simulates algorithmic execution of large FX orders using TWAP, VWAP, and Almgren-Chriss strategies, with order book simulation, square-root market impact, transaction cost analysis, and real-time alpha signals (spread and momentum).
+A production-quality library that prices FX options and simulates algorithmic execution of large FX orders using TWAP, VWAP, and Almgren-Chriss strategies, with order book simulation, square-root market impact, transaction cost analysis, and real-time alpha signals (spread and momentum). Built in C++23 (GCC 14+), header-only, zero warnings, 92 tests.
 
 Built in C++ (C++23 / GCC 14+).
 ```
