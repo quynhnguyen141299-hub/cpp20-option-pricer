@@ -28,6 +28,19 @@ if(BUILD_PYTHON)
     pybind11_add_module(fx_pricer_py python/bindings.cpp)
     target_link_libraries(fx_pricer_py PRIVATE pricer Threads::Threads)
     set_target_properties(fx_pricer_py PROPERTIES OUTPUT_NAME fx_pricer)
+
+    # Embed the compiler's libstdc++ directory into the module's RPATH
+    # so it finds GLIBCXX_3.4.32 at import time (needed on Colab/Ubuntu 22.04)
+    execute_process(
+        COMMAND ${CMAKE_CXX_COMPILER} -print-file-name=libstdc++.so.6
+        OUTPUT_VARIABLE _GCC_STDCPP_PATH
+        OUTPUT_STRIP_TRAILING_WHITESPACE)
+    if(_GCC_STDCPP_PATH)
+        cmake_path(GET _GCC_STDCPP_PATH PARENT_PATH _GCC_STDCPP_DIR)
+        set_target_properties(fx_pricer_py PROPERTIES
+            BUILD_RPATH "${_GCC_STDCPP_DIR}"
+            INSTALL_RPATH "${_GCC_STDCPP_DIR}")
+    endif()
 else()
     # Build executable and tests only when not building Python module
     add_executable(fx_pricer src/main.cpp)
