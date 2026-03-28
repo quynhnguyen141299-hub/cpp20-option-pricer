@@ -647,12 +647,15 @@ Calmar ratio:           +7.0837
 Performance Report (4750 periods)
 Annualized return:      -0.2593  (-25.93%)
 Annualized vol:          0.0045  (0.45%)
-Sharpe ratio:          -67.0721
-Sortino ratio:         -92.7002
+Sharpe ratio:          -67.0721 (#ignore)
+Sortino ratio:         -92.7002 (#ignore)
 Max drawdown:            0.0003  (0.03%)
 Max DD duration:           3200  periods
 Calmar ratio:         -873.4857
 ```
+Negative Sharpe is just the mid-price drift during the simulation — it measures market direction, not algo quality. 
+Real VWAP performance metric is VWAP slippage in the TCA report (+0.46 bps), which shows algo tracked the benchmark closely."
+
 
 ---
 
