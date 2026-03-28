@@ -15,7 +15,7 @@ Also, this app deliver fast pricing for FX options and their real-time Greeks us
 
 ### Pricing
 
-Prices European, American, and barrier FX options with multiple engines and cross-validates them: i.e. checks that the different engines agree with each other or not. 
+Prices European, American, and barrier FX options with multiple engines and cross-validates them: i.e. checks that the different engines agree with each other or not (for QR options modelling experimentation / quick execution pricing with real-time greeks). 
 
 For example, the MC price should converge to the GK analytical price, and the FD PDE price should match BS to within 0.015%. If they all agree, you have confidence the implementations are correct.
 
