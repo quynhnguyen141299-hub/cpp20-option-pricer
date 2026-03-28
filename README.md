@@ -11,21 +11,6 @@ QR Usage: Model experimentation
 
 Also, this app deliver fast pricing for FX options and their real-time Greeks using variance reduction techniques (SOBOL QMC + Antithetic Variates + Control Variates + Combined (A+CV)); when you cannot simulate a million MC paths every time, which costs memory and run-time.
 
-NOTE:
-SpreadSignal
-Keeps a std::deque of the last 100 spread observations (configurable via lookback)
-On each tick: score = (avg - current_spread) / avg, clamped to [-1, +1]
-So it's a simple arithmetic mean of the last 100 ticks — not EWMA, not time-bucketed
-
-MomentumSignal
-Keeps a std::deque of the last 50 mid-prices
-Computes return = (latest_mid - oldest_mid) / oldest_mid
-Normalizes by dividing by 0.01 (assumes daily returns rarely exceed 1%), clamped to [-1, +1]
-
-CompositeSignal
-Weighted average of any mix of signals via std::function type erasure
-
-Normalizes by total absolute weight, clamped to [-1, +1]
 ---
 
 ## What it does
@@ -52,6 +37,21 @@ Simulates how a large FX order (e.g. buy 10M EURUSD) gets sliced and executed ov
 - **Order book simulator** — generates realistic tick data with configurable spread, depth, and a square-root market impact model.
 - **Transaction cost analysis (TCA)** — post-trade report: arrival shortfall, VWAP slippage, spread cost, impact cost, timing risk, participation rate.
 - **Alpha signals** — spread and momentum signals that score market conditions in [-1, +1], used to adjust execution aggressiveness in real time.
+  SpreadSignal
+  Keeps a std::deque of the last 100 spread observations (configurable via lookback)
+  On each tick: score = (avg - current_spread) / avg, clamped to [-1, +1]
+  So it's a simple arithmetic mean of the last 100 ticks — not EWMA, not time-bucketed
+  
+  MomentumSignal
+  Keeps a std::deque of the last 50 mid-prices
+  Computes return = (latest_mid - oldest_mid) / oldest_mid
+  Normalizes by dividing by 0.01 (assumes daily returns rarely exceed 1%), clamped to [-1, +1]
+  
+  CompositeSignal
+  Weighted average of any mix of signals via std::function type erasure
+  
+  Normalizes by total absolute weight, clamped to [-1, +1]
+
 - **Performance analytics** — computes Annualized Return, Volatility, Sharpe, Sortino, Calmar, Max DD (value and duration) from any PnL or doubles returns series (the C++ perf. analytics component take either a PnL series or a std::vector<double> of returns and compute a standard set of risk/return metrics).
 
 ---
