@@ -1,6 +1,6 @@
 # C++20 FX Option Pricer & Execution Engine
 
-A production-quality library that prices FX options and simulates algorithmic order execution with transaction cost analysis. Built in modern C++ (C++23 / GCC 14+), header-only, zero warnings, 92 tests.
+A production-quality library that prices FX options and simulates algorithmic order execution with transaction cost analysis. Built in C++ (C++23 / GCC 14+).
 
 QR Usage: Model experimentation
 Compare numerical methods: Monte Carlo vs PDE vs closed-form
