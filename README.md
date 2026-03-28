@@ -1,4 +1,4 @@
-# C++23 FX Option Pricer & Execution Engine (applicable to C++20)
+# C++23 FX Option Pricer & Execution Engine 
 
 
 A production-quality library that prices FX options and simulates algorithmic order execution with transaction cost analysis. Built in C++ (C++23 / GCC 14+).
