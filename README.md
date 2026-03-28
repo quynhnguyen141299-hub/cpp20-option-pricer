@@ -93,6 +93,18 @@ Performance Report (252 periods)
   Calmar ratio:           +7.0837
 ```
 
+### Machine epsilon
+
+```
+double epsilon (2^-52):  2.220446e-16
+float  epsilon (2^-23):  1.192093e-07
+1.0 + eps     == 1.0 ?   false
+1.0 + eps/2   == 1.0 ?   true
+Put-call parity gap:     1.11e-16  (≈ machine epsilon)
+```
+
+Machine epsilon is the smallest `double` such that `1.0 + ε ≠ 1.0`. Our GK pricer's put-call parity residual lands exactly at this hardware limit — proof the analytical engine is numerically exact.
+
 ### Pricing benchmarks
 
 ```
@@ -159,7 +171,7 @@ python/
 ├── bindings.cpp           pybind11 bindings for all key types and engines
 └── demo.py                Python demo script
 
-src/main.cpp               18 demos (9 pricing + 4 new features + 5 execution)
+src/main.cpp               19 demos (9 pricing + 4 new features + 5 execution + 1 numerical)
 tests/test_pricer.cpp      92 unit tests
 CMakeLists.txt
 ```

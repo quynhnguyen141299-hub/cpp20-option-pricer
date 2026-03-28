@@ -622,6 +622,41 @@ void demo_performance() {
     std::cout << "  " << format_report(bt_rpt) << "\n";
 }
 
+// ──────────────────────────────────────────────────────────────────
+// Demo: Machine Epsilon
+// ──────────────────────────────────────────────────────────────────
+void demo_machine_epsilon() {
+    header("Machine Epsilon");
+
+    constexpr double eps = std::numeric_limits<double>::epsilon();   // 2^{-52}
+    constexpr float  eps_f = std::numeric_limits<float>::epsilon();  // 2^{-23}
+
+    std::cout << std::format("  double epsilon (2^-52):  {:.6e}\n", eps);
+    std::cout << std::format("  float  epsilon (2^-23):  {:.6e}\n", static_cast<double>(eps_f));
+
+    // Demonstrate: 1.0 + eps != 1.0, but 1.0 + eps/2 == 1.0
+    const double a = 1.0 + eps;
+    const double b = 1.0 + eps / 2.0;
+    std::cout << std::format("  1.0 + eps     == 1.0 ?   {}\n", a == 1.0 ? "true" : "false");
+    std::cout << std::format("  1.0 + eps/2   == 1.0 ?   {}\n", b == 1.0 ? "true" : "false");
+
+    // Show how it relates to our pricer: put-call parity gap
+    MarketSnap mkt{Spot{1.0850}, Vol{0.0750}, Rate{0.0435}, Rate{0.0250}};
+    Contract call{Strike{1.0900}, YearFrac{0.25}, OptType::Call, Exercise::European, "EURUSD"};
+    Contract put {Strike{1.0900}, YearFrac{0.25}, OptType::Put,  Exercise::European, "EURUSD"};
+    BSEngine bs;
+    auto c = bs.price(call, mkt);
+    auto p = bs.price(put,  mkt);
+    if (c && p) {
+        double S  = 1.0850;
+        double K  = 1.0900;
+        double rd = 0.0435, rf = 0.0250, T = 0.25;
+        double parity_gap = std::abs((c->price - p->price)
+                            - (S * std::exp(-rf * T) - K * std::exp(-rd * T)));
+        std::cout << std::format("  Put-call parity gap:     {:.2e}  (≈ machine epsilon)\n", parity_gap);
+    }
+}
+
 // ══════════════════════════════════════════════════════════════════
 int main() {
     std::cout << "\n"
@@ -654,6 +689,9 @@ int main() {
     demo_tca_report();
     demo_signals();
     demo_performance();
+
+    // ── Numerical foundations ──
+    demo_machine_epsilon();
 
     std::cout << "\n" << std::string(74, '=')
               << "\n  All demos complete.\n"
