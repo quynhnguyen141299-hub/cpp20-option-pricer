@@ -6,7 +6,7 @@ QR Usage: Model experimentation
 Compare numerical methods: Monte Carlo vs PDE vs closed-form
 Study Convergence and Error + Test variance reduction techniques of MC estimators for option pricing
 
-Also, this app deliver fast pricing for FX options and their real-time Greeks using variance reduction techniques (SOBOL QMC + Antithetic Variates + Control Variates + Combined (A+CV); when you cannot simulate a million MC paths every time, which costs memory and run-time.
+Also, this app deliver fast pricing for FX options and their real-time Greeks using variance reduction techniques (SOBOL QMC + Antithetic Variates + Control Variates + Combined (A+CV)); when you cannot simulate a million MC paths every time, which costs memory and run-time.
 
 ---
 
